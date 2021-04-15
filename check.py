@@ -1,7 +1,9 @@
-import re
+class 부모:
+    def __init__(self):
+        print("부모생성")
 
-s = "00115faabbcc"
-s2 = "".join(reversed(s))
-print(s2)
-"""s2 = re.sub(r'(.{2})', r':\1', s)[1:]
-print(s2)"""
+class 자식(부모):
+    def __init__(self):
+        print("자식생성")
+
+me = 자식()
