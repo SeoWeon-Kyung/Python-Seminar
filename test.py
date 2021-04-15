@@ -34,15 +34,16 @@ class Account:
             return out_money
     
     def display_info(self):
-        money ="".join(reversed(self.money_left))
+        money ="".join(reversed(str(self.money_left)))
         temp = re.sub(r'(.{3})', r':\1', money)[1:]
-        money = "".join(reversed(new_money))
+        money = "".join(reversed(temp))
 
-        info = """은행이름: {}
+        info = """
+        은행이름: {}
         예금주: {}
         계좌번호: {}
         잔고: {}원
-        """.format(self.bank_name, self.owner, self.acc_num, new_money)
+        """.format(self.bank_name, self.owner, self.acc_num, money)
         print(info)
 
 
