@@ -10,7 +10,8 @@ for i in data:
     arr.append(i)                               # 좌우대칭한 리스트들을 엮어 2차원 리스트 만듬
 
 #### 앞서 리스트화 한 데이터를 회전 ####
-new_arr = list(map(list, zip(*arr)))   # map과 zip 함수 이용하여 2차원 리스트 행, 열 바꿈 --> 왼쪽 90도 회전 구현
+new_arr = list(zip(*arr))  # map과 zip 함수 이용하여 2차원 리스트 행, 열 바꿈 --> 왼쪽 90도 회전 구현
+print(new_arr)
 
 f_in.close()
 
