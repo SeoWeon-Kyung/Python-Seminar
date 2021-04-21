@@ -1,5 +1,5 @@
 import re
-from my_csv import csv_parse, only_float
+from my_csv import csv_parse, only_float, column_ave, check_spec
 
 with open('../PYTHON-SEMINAR/ProgrammingHW02_SpecCheck/log.csv', 'r') as f:
     low_limit = csv_parse(f.readline())      # csv 1st line
@@ -11,22 +11,12 @@ with open('../PYTHON-SEMINAR/ProgrammingHW02_SpecCheck/log.csv', 'r') as f:
 
     data = f.readlines()
     num_data = [only_float(csv_parse(line)) for line in data]
-    data_length = len(data)
 
      # 각 열 평균 구하기
-    align_data = list(zip(*num_data))
-    average = []
-    for line in align_data:
-        average.append(sum(line)/data_length)
+    average = column_ave(num_data)
     
     # spec out 찾기
-    spec_out = []
-    check_data = list(zip(low_limit, high_limit, align_data))
-    for guide_low, guide_high, data_line in check_data:    
-        for num in data_line:
-            if guide_low <= num <= guide_high:
-                pass
-            else: spec_out.append(num)
+    spec_out = check_spec(low_limit, high_limit, num_data)
 
 """ 데이터 출력 순서
 1. 헤더 --> head 의 앞칸 'barcode' 삭제 
