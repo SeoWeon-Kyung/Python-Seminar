@@ -1,9 +1,25 @@
-import re
+class ScopeTest:
+    spam = "test spam"
 
-def csv_num_parsing(line):
-    p = re.compile('/D')
-    return [float(num) for num in line.strip().split(',') if not p.match(num)]
+    def do_local(self):
+        self.spam = "local spam"
 
-data = 'DN8007403SJPYQ5T6,5.12219,5.388074,5.184751,5.599218\n'
-data_parsed = csv_num_parsing(data)
-print(data_parsed)
+    @classmethod
+    def do_global(cls):
+        cls.spam = "global spam"
+    
+first = ScopeTest()
+second = ScopeTest()
+print(f"초기 글로벌 변수 spam : {first.spam}")
+
+first.spam = "change spam"   # 글로벌 변수 spam이 아니라 새롭게 만들어지는 인스턴스 변수 spam임
+print(f'인스턴스에서 글로벌 변수 변경 : {first.spam},  다른 인스턴스 : {second.spam}')
+print(dir(first))
+
+"""
+first.do_local()   # self 떼면 글로벌 변수 변경 가능 
+print(f'인스턴스 메서드로 접근해서 변경 : {first.spam}, 다른 인스턴스 : {second.spam}')
+
+ScopeTest().do_global()
+print(f'클래스 메서드로 접근해서 변경 : {first.spam}, 다른 인스턴스 : {second.spam}')
+"""

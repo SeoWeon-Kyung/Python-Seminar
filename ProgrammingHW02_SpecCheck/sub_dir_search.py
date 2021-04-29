@@ -13,12 +13,12 @@ def search(dirname):
             else:
                 ext = os.path.splitext(full_filename)[-1]
                 if ext == '.py':
- #                   print(full_filename)  -->  수정
-                    result.append(full_filename)
+ #                   print(full_filename)  -->  수정 삭제
+                    result.append(full_filename)   # --> 이거로 대체
     except PermissionError:               # 접근 제한된 디렉토리 패스
         pass
     return result
 
-result_list = search("C:/Users/user/Desktop/Python-Seminar")
+result_list = search(".")   # 현재 디렉토리부터 하위폴더 포함 검색
 
 for name in result_list: print(name)
