@@ -1,0 +1,11 @@
+idx,movie_review,type
+0,great great great movie ever,positive
+1,I like this amazing movie,positive
+2,my boyfriend said great movie ever,positive
+3,cool cool cool,positive
+4,awesome boyfriend said cool movie ever,positive
+5,shame shame shame,negative
+6,awesome director shame movie boring movie,negative
+7,do not like this movie,negative
+8,I do not like this boring movie,negative
+9,aweful terrible boring movie,negative
