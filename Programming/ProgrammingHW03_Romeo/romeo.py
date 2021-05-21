@@ -14,6 +14,7 @@ with open(road, 'r') as f:
     data_dic = {}
     for word in data_set:
         data_dic[word] = data.count(word)
+    
     data_dic = sorted(data_dic.items(), key=lambda x: x[0])
     data_dic = sorted(data_dic, key=lambda x: x[1], reverse=True)
      
