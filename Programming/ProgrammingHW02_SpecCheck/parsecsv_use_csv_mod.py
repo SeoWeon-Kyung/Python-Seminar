@@ -4,7 +4,7 @@
 import csv  
 from my_csv import *     # str --> float 함수만 사용
 
-with open("../Python-Seminar/ProgrammingHW02_SpecCheck/log.csv", 'r') as f:
+with open("../Python-Seminar/Programming/ProgrammingHW02_SpecCheck/log.csv", 'r') as f:
     data = list(csv.reader(f))
 
     # Datas
