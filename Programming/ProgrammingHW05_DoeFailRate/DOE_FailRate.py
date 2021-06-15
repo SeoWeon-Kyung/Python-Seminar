@@ -3,14 +3,17 @@ import re
 from numpy.core.numeric import NaN
 import pandas as pd
 from pandas.core.indexes.base import Index
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 def read_log(fol_path, file_name, which):
     data = pd.read_csv(fol_path + '/' + file_name, dtype='unicode')
-    data.drop_duplicates(keep='last', inplace=True)
 
     if which == 'AA':
+        data.drop_duplicates('SensorID', keep='last', inplace=True)
         temp = data[data['SensorID'] == 'SensorID'].index
     elif which == 'EOL':
+        data.drop_duplicates('Tx_ASIC_ID', keep='last', inplace=True)
         temp = data[data['Tx_ASIC_ID'] == 'Tx_ASIC_ID'].index
     data = data.drop(temp)
 
@@ -95,20 +98,47 @@ sfr 2060에는 둘다 난 애들만 넣는다.
 # fail data 수 세기 위한 결과물 sheet 만들기
 fail_data = pd.DataFrame(index=data.index)
 fail_data = data[['moduleConfig', 'site_AA', 'Offset_Z']].copy()
-new_col = ['count', 'cm20', 'cm60', 'cm2060']
+new_col = ['cm20', 'cm60', 'cm2060']
+fail_data['count'] = 1
 for col in new_col: fail_data[col] = 0
 
 # fail data 를 sfr20, 60, 2060 exclusive 하게 만듬
-fail_data[new_col[1]][specout_sfr20.index] = 1
-fail_data[new_col[2]][specout_sfr60.index] = 1
-fail_data[new_col[3]] = fail_data[new_col[1]] * fail_data[new_col[2]]
-for col in new_col[1:3]: fail_data[col] -= fail_data[new_col[-1]]
-for col in new_col[1:]: fail_data[new_col[0]] += fail_data[col]
+fail_data[new_col[0]][specout_sfr20.index] = 1
+fail_data[new_col[1]][specout_sfr60.index] = 1
+fail_data[new_col[2]] = fail_data[new_col[0]] * fail_data[new_col[1]]
+for col in new_col[0:2]: fail_data[col] -= fail_data[new_col[-1]]
+
+
+# stack graph 뽑기 위해 column 만드는 부분
+fail_data["sfr"] = None
+fail_data["sfr"][fail_data['cm20'] == 1] = 'cm20'
+fail_data["sfr"][fail_data['cm60'] == 1] = 'cm60'
+fail_data["sfr"][fail_data['cm2060'] == 1] = 'cm2060'
+
 
 # Groupby
 fail_rate_result = fail_data.groupby(['moduleConfig', 'site_AA', 'Offset_Z']).sum()
-for col in new_col[1:]: fail_rate_result[col] = fail_rate_result[col] / fail_rate_result[new_col[0]] * 100
+#fail_rate_result = fail_rate_result.agg(=, 'sum'])
+#fail_rate_result = fail_rate_result.sum()
 
-# result 출력
-fail_rate_result.to_csv(folderpath+ '/hw5_result.csv')
 
+for col in new_col: fail_rate_result[col] = fail_rate_result[col] / fail_rate_result['count'] * 100
+
+# result Failure analysis 출력
+fail_rate_result.to_csv(folderpath + '/hw5_result.csv')
+
+
+# stack graph 형태로 출력
+graph1 = sns.histplot(data=fail_data[fail_data["moduleConfig"] == "C4004"], hue='sfr', x="Offset_Z", multiple="stack")
+plt.show()
+graph2 = sns.histplot(data=fail_data[fail_data["moduleConfig"] == "C4010"], hue='sfr', x="Offset_Z", multiple="stack")
+plt.show()
+graph3 = sns.histplot(data=fail_data[fail_data["moduleConfig"] == "C4011"], hue='sfr', x="Offset_Z", multiple="stack")
+plt.show()
+
+"""
+# wide-form data 출력 relplot으로 graph 
+#print(fail_rate_result.head(10))
+graph = sns.relplot(data=fail_rate_result, x='Offset_Z', kind='line')
+plt.show()
+"""
