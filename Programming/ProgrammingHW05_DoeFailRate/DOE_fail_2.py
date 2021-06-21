@@ -131,7 +131,7 @@ fail_rate_result = fail_data.groupby(['moduleconfig', 'site', 'offset_z']).sum()
 fail_rate_result.loc[:, ['cm20', 'cm60', 'cm2060']] = \
      fail_rate_result.loc[:, ['cm20', 'cm60', 'cm2060']].div(fail_rate_result['count'], axis=0) * 100
 
-# result Failure analysis 출력
+# result Failure analysis 출력 - 현재 실행파일 존재하는 폴더 안에 생성
 fail_rate_result.to_csv(folderpath + '/hw5_result.csv')
 
 
