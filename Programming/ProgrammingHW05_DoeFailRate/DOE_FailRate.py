@@ -6,6 +6,7 @@ from pandas.core.indexes.base import Index
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# 이름 알아낸 로그 파일 읽어오기 
 def read_log(fol_path, file_name, which):
     data = pd.read_csv(fol_path + '/' + file_name, dtype='unicode')
 
@@ -42,7 +43,7 @@ for file in file_list:
     m_log = p_log.match(file)
     if m_log: log_files.append(file)
 
-# 골라낸 file을 AA, EOL file로 분류하고 config로 key 
+# 골라낸 file을 AA, EOL file로 분류하고 config로 key 설정, file name을 dict에 저장
 p_AA = re.compile(r'BA.*A{2}')
 p_EOL = re.compile(r'BA.*LAS')
 p_config = re.compile(r'C\d{4}')
