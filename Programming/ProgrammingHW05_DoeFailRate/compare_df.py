@@ -12,10 +12,10 @@ def compare_df(df1, df2):
     no_match_idx = [x[0] for x in df_dict.values() if len(x) == 1]
     no_match = df.loc[no_match_idx, :]
     
-    match_idx = [x[0] for x in df_dict.values() if len(x) == 2]
-    match = df.loc[match_idx, :]
+    #match_idx = [x[0] for x in df_dict.values() if len(x) == 2]
+    #match = df.loc[match_idx, :]
 
-    return no_match, match
+    return no_match #, match
 
 folderpath = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/')
 
