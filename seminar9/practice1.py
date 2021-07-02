@@ -6,13 +6,13 @@ import matplotlib as plt
 import seaborn as sb
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtGui import *
 
 # main modules : QtWidgets, QtGui, QtCore
 
 import sys
 
 from random import choice
-
 
 class MainWindow(QMainWindow):
     
@@ -21,23 +21,27 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("My App")
 
-        widget = QComboBox()
-        widget.addItems(["One", "Two", "Three"])
+        layout = QGridLayout()
 
-        # Sends the current index (position) of the selected item.
-        widget.currentIndexChanged.connect( self.index_changed )
+        layout.addWidget(Color('red'), 0, 0)
+        layout.addWidget(Color('green'), 1, 0)
+        layout.addWidget(Color('blue'), 1, 1)
+        layout.addWidget(Color('purple'), 2, 1)
 
-        # There is an alternate signal to send the text.
-        widget.editTextChanged.connect( self.text_changed )
-
+        widget = QWidget()
+        widget.setLayout(layout)
         self.setCentralWidget(widget)
 
 
-    def index_changed(self, i): # i is an int
-        print(i)
+class Color(QWidget):
+    
+    def __init__(self, color):
+        super(Color, self).__init__()
+        self.setAutoFillBackground(True)
 
-    def text_changed(self, s): # s is a str
-        print(s)
+        palette = self.palette()
+        palette.setColor(QPalette.Window, QColor(color))
+        self.setPalette(palette)
         
 
 app = QApplication(sys.argv)
